@@ -292,6 +292,18 @@
         }
 
         /**
+         * Turns HTML into a DOM node
+         *
+         * @param html
+         * @returns {string}
+         */
+        function html2DOM(html) {
+            var tmpl = document.createElement('div');
+            tmpl.innerHTML = html;
+            return tmpl.childNodes[0];
+        }
+
+        /**
          * Generates HTML string for the passed array of objects
          *
          * @param tabs
@@ -300,17 +312,20 @@
         function getTabsHtml(tabs) {
             var tabsHtml = '';
             tabs.forEach(function(tab){
-
-                var tempTabTemplate = Config.TAB_TEMPLATE,
+                var ttt = html2DOM(Config.TAB_TEMPLATE),
                     faviconUrl = tab.favIconUrl || Config.DEFAULT_FAVICON;
 
-                tempTabTemplate = tempTabTemplate.replace('{favicon}', faviconUrl);
-                tempTabTemplate = tempTabTemplate.replace('{default_favicon}', Config.DEFAULT_FAVICON);
-                tempTabTemplate = tempTabTemplate.replace('{title}', tab.title);
-                tempTabTemplate = tempTabTemplate.replace('{id}', tab.id);
-                tempTabTemplate = tempTabTemplate.replace('{windowId}', tab.windowId);
+                ttt
+                    .querySelector('.favicon-img > img')
+                    .setAttribute('src', faviconUrl);
+                ttt
+                    .querySelector('.title')
+                    .textContent = tab.title;
 
-                tabsHtml += tempTabTemplate;
+                tabsHtml += ttt.outerHTML
+                    .replace('{default_favicon}', Config.DEFAULT_FAVICON)
+                    .replace('{id}', tab.id)
+                    .replace('{windowId}', tab.windowId);
             });
 
             return tabsHtml;
