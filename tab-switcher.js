@@ -322,23 +322,14 @@
          * @param keyword
          */
         function filterTabs(keyword) {
-
-            keyword = keyword.toLowerCase();
-
-            var matches   = [],
-                tempTitle = '',
-                tempUrl   = '';
-
-            BrowserTab.allTabs.map(function (tab) {
-                tempTitle = tab.title.toLowerCase();
-                tempUrl   = tab.url.toLowerCase();
-
-                if (tempTitle.match(keyword) || tempUrl.match(keyword)) {
-                    matches.push(tab);
-                }
+            var fuse = new Fuse(BrowserTab.allTabs, {
+                keys: ['title', 'url'],
+                shouldSort: true,
+                threshold: 0.6,
+                location: 0,
+                distance: 100,
             });
-
-            populateTabs(matches);
+            populateTabs(fuse.search(keyword));
         }
 
         /**
