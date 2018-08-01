@@ -82,7 +82,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                 'assets/css/tab-switcher.css'
             ],
             jsFiles = [
-                'assets/lib/sanitize-html.js',
                 'assets/lib/jquery.js',
                 'assets/lib/keymaster.js',
                 'tab-switcher.js'
