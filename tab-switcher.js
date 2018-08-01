@@ -302,7 +302,12 @@
             tabs.forEach(function(tab){
 
                 var tempTabTemplate = Config.TAB_TEMPLATE,
-                    faviconUrl = tab.favIconUrl || Config.DEFAULT_FAVICON;
+                    faviconUrl = Config.DEFAULT_FAVICON;
+
+                if (tab.favIconUrl && tab.favIconUrl.indexOf('https://') === 0) {
+                    // Only load actual favicon if loaded via HTTPS
+                    faviconUrl = tab.favIconUrl;
+                }
 
                 tempTabTemplate = tempTabTemplate.replace('{favicon}', faviconUrl);
                 tempTabTemplate = tempTabTemplate.replace('{default_favicon}', Config.DEFAULT_FAVICON);
